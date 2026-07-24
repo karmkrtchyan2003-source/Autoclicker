@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">АвтоКликер</string>
+    <string name="accessibility_service_description">Нужен для того, чтобы АвтоКликер мог выполнять клики в нужной точке экрана.</string>
+</resources>
