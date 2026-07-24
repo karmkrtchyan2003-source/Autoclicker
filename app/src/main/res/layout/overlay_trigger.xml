@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="72dp"
-    android:layout_height="72dp">
+    android:layout_width="144dp"
+    android:layout_height="144dp">
 
     <View
         android:id="@+id/triggerCircle"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
         android:background="@drawable/circle_button" />
 
     <TextView
         android:id="@+id/lockToggle"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom|end"
         android:gravity="center"
         android:text="🔒"
-        android:textSize="16sp" />
+        android:textSize="26sp" />
 
 </FrameLayout>
