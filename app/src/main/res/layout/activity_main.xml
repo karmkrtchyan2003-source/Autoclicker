@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="АвтоКликер"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvOverlayStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Разрешение на оверлей: не выдано"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnGrantOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Дать разрешение на оверлей"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvAccessibilityStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Служба спец. возможностей: выключена"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnGrantAccessibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Включить в настройках"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Интервал между кликами (мс), пока кнопка зажата:" />
+
+    <EditText
+        android:id="@+id/etInterval"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="50"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Запустить АвтоКликер"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Остановить" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="После запуска на экране появятся: синяя кнопка (зажимай её пальцем — клики будут идти в точку с красной меткой) и красная метка (перетащи туда, куда должны попадать клики). Чтобы передвинуть синюю кнопку — нажми на замочек на ней, перетащи, затем нажми ещё раз, чтобы снова заблокировать в режим клика." />
+
+</LinearLayout>
