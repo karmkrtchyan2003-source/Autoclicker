@@ -31,7 +31,7 @@ class ClickAccessibilityService : AccessibilityService() {
     fun performClick(x: Float, y: Float) {
         val path = Path()
         path.moveTo(x, y)
-        val stroke = GestureDescription.StrokeDescription(path, 0, 1)
+        val stroke = GestureDescription.StrokeDescription(path, 0, 40)
         val gesture = GestureDescription.Builder().addStroke(stroke).build()
         dispatchGesture(gesture, null, null)
     }
