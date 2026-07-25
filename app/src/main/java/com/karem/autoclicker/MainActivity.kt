@@ -1,8 +1,11 @@
 package com.karem.autoclicker
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import android.widget.Button
@@ -58,9 +61,23 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Сначала включи службу спец. возможностей", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            prefs.edit().putInt(Prefs.INTERVAL_MS, interval).apply()
+            prefs.edit()
+                .putInt(Prefs.INTERVAL_MS, interval)
+                .putString(Prefs.LAST_ERROR, "")
+                .apply()
             startService(Intent(this, OverlayService::class.java))
             Toast.makeText(this, "АвтоКликер запущен, сверни приложение", Toast.LENGTH_SHORT).show()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                val err = prefs.getString(Prefs.LAST_ERROR, "")
+                if (!err.isNullOrEmpty()) {
+                    AlertDialog.Builder(this)
+                        .setTitle("Ошибка запуска службы")
+                        .setMessage(err)
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+            }, 1000)
         }
 
         findViewById<Button>(R.id.btnStop).setOnClickListener {
