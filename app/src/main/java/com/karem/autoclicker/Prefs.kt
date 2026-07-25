@@ -7,4 +7,5 @@ object Prefs {
     const val TARGET_Y = "target_y"
     const val TRIGGER_X = "trigger_x"
     const val TRIGGER_Y = "trigger_y"
+    const val LAST_ERROR = "last_error"
 }
