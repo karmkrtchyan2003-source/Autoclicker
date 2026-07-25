@@ -46,51 +46,59 @@ class OverlayService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForegroundWithNotification()
+        try {
+            startForegroundWithNotification()
 
-        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val prefs = getSharedPreferences(Prefs.NAME, MODE_PRIVATE)
-        intervalMs = prefs.getInt(Prefs.INTERVAL_MS, 50)
+            windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+            val prefs = getSharedPreferences(Prefs.NAME, MODE_PRIVATE)
+            intervalMs = prefs.getInt(Prefs.INTERVAL_MS, 50)
 
-        val overlayType =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            else
-                @Suppress("DEPRECATION") WindowManager.LayoutParams.TYPE_PHONE
+            val overlayType =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                else
+                    @Suppress("DEPRECATION") WindowManager.LayoutParams.TYPE_PHONE
 
-        val commonFlags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            val commonFlags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 
-        targetView = LayoutInflater.from(this).inflate(R.layout.overlay_target, null)
-        targetParams = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            overlayType,
-            commonFlags,
-            PixelFormat.TRANSLUCENT
-        ).apply {
-            gravity = Gravity.TOP or Gravity.START
-            x = prefs.getInt(Prefs.TARGET_X, 300)
-            y = prefs.getInt(Prefs.TARGET_Y, 600)
+            targetView = LayoutInflater.from(this).inflate(R.layout.overlay_target, null)
+            targetParams = WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                overlayType,
+                commonFlags,
+                PixelFormat.TRANSLUCENT
+            ).apply {
+                gravity = Gravity.TOP or Gravity.START
+                x = prefs.getInt(Prefs.TARGET_X, 300)
+                y = prefs.getInt(Prefs.TARGET_Y, 600)
+            }
+            windowManager.addView(targetView, targetParams)
+            setupTargetDrag(prefs)
+
+            triggerView = LayoutInflater.from(this).inflate(R.layout.overlay_trigger, null)
+            triggerParams = WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                overlayType,
+                commonFlags,
+                PixelFormat.TRANSLUCENT
+            ).apply {
+                gravity = Gravity.TOP or Gravity.START
+                x = prefs.getInt(Prefs.TRIGGER_X, 100)
+                y = prefs.getInt(Prefs.TRIGGER_Y, 900)
+            }
+            windowManager.addView(triggerView, triggerParams)
+            setupTrigger(prefs)
+
+            prefs.edit().putString(Prefs.LAST_ERROR, "").apply()
+        } catch (t: Throwable) {
+            val prefs = getSharedPreferences(Prefs.NAME, MODE_PRIVATE)
+            prefs.edit().putString(Prefs.LAST_ERROR, t.toString() + "\n" + t.stackTraceToString()).apply()
+            stopSelf()
         }
-        windowManager.addView(targetView, targetParams)
-        setupTargetDrag(prefs)
-
-        triggerView = LayoutInflater.from(this).inflate(R.layout.overlay_trigger, null)
-        triggerParams = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            overlayType,
-            commonFlags,
-            PixelFormat.TRANSLUCENT
-        ).apply {
-            gravity = Gravity.TOP or Gravity.START
-            x = prefs.getInt(Prefs.TRIGGER_X, 100)
-            y = prefs.getInt(Prefs.TRIGGER_Y, 900)
-        }
-        windowManager.addView(triggerView, triggerParams)
-        setupTrigger(prefs)
     }
 
     private fun setupTargetDrag(prefs: android.content.SharedPreferences) {
