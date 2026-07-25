@@ -32,11 +32,21 @@ class OverlayService : Service() {
     private var locked = true
 
     private val clickRunnable = object : Runnable {
+    private val clickRunnable = object : Runnable {
         override fun run() {
             if (clicking) {
                 val targetX = targetParams.x + (targetView.width / 2f)
                 val targetY = targetParams.y + (targetView.height / 2f)
-                ClickAccessibilityService.instance?.performClick(targetX, targetY)
+                val svc = ClickAccessibilityService.instance
+                if (svc == null) {
+                    android.widget.Toast.makeText(
+                        applicationContext,
+                        "СЛУЖБА ДОСТУПНОСТИ НЕ ПОДКЛЮЧЕНА",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    svc.performClick(targetX, targetY)
+                }
                 handler.postDelayed(this, intervalMs.toLong())
             }
         }
